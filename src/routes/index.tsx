@@ -183,7 +183,7 @@ function Index() {
 
 
       {/* Quick access */}
-      <section className="mx-auto w-full max-w-2xl px-5 pb-10">
+      <section className="mx-auto w-full max-w-2xl px-4 pb-10 sm:px-5">
         <SectionHeader index="01" title="Acesso rápido" right={`${quickLinks.length} links`} />
         <div className="mt-4 space-y-3">
           {quickLinks.map((link) => {
@@ -193,7 +193,7 @@ function Index() {
                 key={link.id}
                 href={link.href}
                 className={[
-                  "group flex items-center gap-4 rounded-2xl border p-4 transition-all",
+                  "group flex items-center gap-3 rounded-2xl border p-3 transition-all sm:gap-4 sm:p-4",
                   link.highlight
                     ? "border-neon/60 bg-neon text-neon-foreground shadow-[0_0_30px_-8px_var(--neon)] hover:brightness-105"
                     : "border-border bg-card hover:border-neon/40",
@@ -201,15 +201,15 @@ function Index() {
               >
                 <div
                   className={[
-                    "grid size-11 shrink-0 place-items-center rounded-full",
+                    "grid size-10 shrink-0 place-items-center rounded-full sm:size-11",
                     link.highlight ? "bg-neon-foreground/10 text-neon-foreground" : "bg-secondary text-neon",
                   ].join(" ")}
                 >
                   <Icon className="size-4" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="truncate font-medium">{link.title}</span>
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <span className="truncate text-sm font-medium sm:text-base">{link.title}</span>
                     {link.badge && (
                       <span className="rounded-full bg-neon-foreground/15 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest">
                         {link.badge}
@@ -231,6 +231,7 @@ function Index() {
           })}
         </div>
       </section>
+
 
       {/* Marquee */}
       <div className="relative overflow-hidden border-y border-border bg-card/50 py-3">
