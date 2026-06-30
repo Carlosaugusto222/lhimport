@@ -35,6 +35,20 @@ function Index() {
   const { data: offers = [] } = useOffers();
   const { data: quickLinks = [] } = useQuickLinks();
   const { data: stores = [] } = useStores();
+  const [buyOpen, setBuyOpen] = useState(false);
+  const [buyOffer, setBuyOffer] = useState<any>(null);
+
+  function openBuy(offer: any) { setBuyOffer(offer); setBuyOpen(true); }
+  function chooseStore(store: any) {
+    setBuyOpen(false);
+    const base = (store.whatsapp || "").trim();
+    if (!base || base === "#") return;
+    const msg = encodeURIComponent(`Olá! Tenho interesse em: ${buyOffer?.title}${buyOffer?.price ? ` (${buyOffer.price})` : ""}`);
+    const sep = base.includes("?") ? "&" : "?";
+    const url = /text=/.test(base) ? base : `${base}${sep}text=${msg}`;
+    window.open(url, "_blank", "noopener");
+  }
+
 
   const brand = hero?.brand ?? "LH Import";
   const handle = hero?.handle ?? "@lhimport";
