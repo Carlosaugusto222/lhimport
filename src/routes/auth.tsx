@@ -87,7 +87,8 @@ function AuthPage() {
           </div>
           <div>
             <Label htmlFor="password">Senha</Label>
-            <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Input id="password" type="password" required minLength={8} autoComplete={mode === "signin" ? "current-password" : "new-password"} value={password} onChange={(e) => setPassword(e.target.value)} />
+            {mode === "signup" && <p className="mt-1 text-[10px] text-muted-foreground">Mín. 8 caracteres. Senhas vazadas serão recusadas.</p>}
           </div>
           <Button type="submit" disabled={loading} className="w-full">
             {loading ? "..." : mode === "signin" ? "Entrar" : "Criar conta"}
