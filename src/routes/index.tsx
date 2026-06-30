@@ -98,22 +98,39 @@ function getIcon(name: string) {
 
 
 function Index() {
-  const { data: hero } = useHero();
-  const { data: offers = [] } = useOffers();
-  const { data: quickLinks = [] } = useQuickLinks();
-  const { data: stores = [] } = useStores();
+  const { data: hero, error: heroErr } = useHero();
+  const { data: offers = [], error: offersErr } = useOffers();
+  const { data: quickLinks = [], error: linksErr } = useQuickLinks();
+  const { data: stores = [], error: storesErr } = useStores();
   const [buyOpen, setBuyOpen] = useState(false);
   const [buyOffer, setBuyOffer] = useState<any>(null);
+
+  useEffect(() => {
+    const err = heroErr || offersErr || linksErr || storesErr;
+    if (err) {
+      console.error("[lh-import] load error", err);
+      toast.error("Não foi possível carregar parte do conteúdo. Tente novamente.");
+    }
+  }, [heroErr, offersErr, linksErr, storesErr]);
 
   function openBuy(offer: any) { setBuyOffer(offer); setBuyOpen(true); }
   function chooseStore(store: any) {
     setBuyOpen(false);
-    const base = (store.whatsapp || "").trim();
-    if (!base || base === "#") return;
-    const msg = encodeURIComponent(`Olá! Tenho interesse em: ${buyOffer?.title}${buyOffer?.price ? ` (${buyOffer.price})` : ""}`);
-    const sep = base.includes("?") ? "&" : "?";
-    const url = /text=/.test(base) ? base : `${base}${sep}text=${msg}`;
-    window.open(url, "_blank", "noopener");
+    try {
+      const safe = safeUrl(store?.whatsapp);
+      if (safe === "#") { toast.error("WhatsApp da loja indisponível."); return; }
+      const u = new URL(safe);
+      if (!/^https?:$/.test(u.protocol)) return;
+      const title = String(buyOffer?.title ?? "").slice(0, 200);
+      const price = buyOffer?.price ? ` (${String(buyOffer.price).slice(0, 60)})` : "";
+      if (!u.searchParams.has("text")) {
+        u.searchParams.set("text", `Olá! Tenho interesse em: ${title}${price}`);
+      }
+      window.open(u.toString(), "_blank", "noopener,noreferrer");
+    } catch (e) {
+      console.error("[lh-import] chooseStore failed", e);
+      toast.error("Não foi possível abrir o WhatsApp.");
+    }
   }
 
 
