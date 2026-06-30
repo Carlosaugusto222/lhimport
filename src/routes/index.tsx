@@ -166,7 +166,7 @@ function Index() {
           ))}
 
           {offers.length === 0 && (
-            <div className="grid min-h-[260px] place-items-center rounded-2xl border border-dashed border-border bg-card/40 p-6 text-center sm:col-span-2 lg:col-span-3">
+            <div className="col-span-2 grid min-h-[200px] place-items-center rounded-2xl border border-dashed border-border bg-card/40 p-6 text-center lg:col-span-3">
               <div className="flex flex-col items-center gap-2">
                 <div className="grid size-10 place-items-center rounded-full border border-border bg-card text-muted-foreground">
                   <Plus className="size-4" />
@@ -179,6 +179,7 @@ function Index() {
           )}
         </div>
       </section>
+
 
       {/* Quick access */}
       <section className="mx-auto w-full max-w-2xl px-5 pb-10">
