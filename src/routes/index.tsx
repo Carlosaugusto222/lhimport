@@ -461,7 +461,9 @@ function StoreAction({
 }) {
   return (
     <a
-      href={href}
+      href={safeUrl(href)}
+      target="_blank"
+      rel="noopener noreferrer"
       className="group flex items-center gap-2.5 rounded-xl border border-border bg-background/60 p-2.5 transition-colors hover:border-neon/40 hover:bg-secondary"
     >
       <div className="grid size-8 shrink-0 place-items-center rounded-lg bg-secondary text-neon">
