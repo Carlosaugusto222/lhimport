@@ -68,11 +68,11 @@ function Index() {
 
 
       {/* Hero */}
-      <section className="flex flex-col items-center px-5 pb-10 pt-6 text-center">
+      <section className="flex flex-col items-center px-4 pb-8 pt-4 text-center sm:px-5 sm:pb-10 sm:pt-6">
         <div className="relative">
-          <div className="animate-pulse-ring relative grid size-32 place-items-center rounded-full border border-neon/40 bg-card">
-            <div className="grid size-24 place-items-center rounded-full bg-gradient-to-br from-zinc-800 to-black">
-              <span className="font-mono text-[11px] font-bold tracking-tight text-neon">{brand.toUpperCase()}</span>
+          <div className="animate-pulse-ring relative grid size-24 place-items-center rounded-full border border-neon/40 bg-card sm:size-32">
+            <div className="grid size-[72px] place-items-center rounded-full bg-gradient-to-br from-zinc-800 to-black sm:size-24">
+              <span className="font-mono text-[10px] font-bold tracking-tight text-neon sm:text-[11px]">{brand.toUpperCase()}</span>
             </div>
           </div>
           <div className="absolute right-0 top-1 grid size-6 place-items-center rounded-full border border-neon/40 bg-card">
@@ -80,9 +80,9 @@ function Index() {
           </div>
         </div>
 
-        <h1 className="mt-6 text-3xl font-semibold tracking-tight sm:text-4xl">{brand}</h1>
-        <p className="mt-1 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">{handle}</p>
-        <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">{tagline}</p>
+        <h1 className="mt-5 text-2xl font-semibold tracking-tight sm:mt-6 sm:text-4xl">{brand}</h1>
+        <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:text-xs">{handle}</p>
+        <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground sm:mt-4">{tagline}</p>
 
         <a
           href={hero?.instagram ?? "#"}
@@ -93,8 +93,8 @@ function Index() {
         </a>
 
         {categories.length > 0 && (
-          <div className="mt-7 inline-flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em]">
-            <span className="size-1.5 rounded-full bg-neon shadow-[0_0_6px_var(--neon)]" />
+          <div className="mt-6 inline-flex max-w-full flex-wrap items-center justify-center gap-1 rounded-full border border-border bg-card px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] sm:mt-7">
+            <span className="size-1.5 shrink-0 rounded-full bg-neon shadow-[0_0_6px_var(--neon)]" />
             {categories.map((c, i) => (
               <span key={c} className="flex items-center gap-1">
                 <span className={i === 0 ? "text-foreground" : "text-muted-foreground"}>{c}</span>
@@ -104,6 +104,7 @@ function Index() {
           </div>
         )}
       </section>
+
 
       {/* Ofertas do dia */}
       <section className="mx-auto w-full max-w-5xl px-5 pb-10">
