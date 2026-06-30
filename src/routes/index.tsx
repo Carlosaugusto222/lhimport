@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowUpRight, Instagram, MapPin, Crown, Navigation, MessageCircle, Info, Sparkles, BadgeCheck, Flame, Plus, Tag } from "lucide-react";
+import * as Icons from "lucide-react";
+import { ArrowUpRight, Instagram, MapPin, Navigation, MessageCircle, Info, Sparkles, BadgeCheck, Flame, Plus, Tag } from "lucide-react";
+import { useHero, useOffers, useQuickLinks, useStores } from "@/hooks/useSiteData";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -13,31 +15,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const categories = ["Apple", "Xiaomi", "Realme", "Perfumes", "Eletros"];
-
-const quickLinks = [
-  {
-    title: "Unidade Palmares",
-    subtitle: "Atendimento direto no WhatsApp · (81) 99821-5108",
-    href: "https://wa.me/5581998215108",
-    icon: MapPin,
-  },
-  {
-    title: "Unidade Barreiros",
-    subtitle: "Atendimento direto no WhatsApp · (81) 98187-3002",
-    href: "https://wa.me/5581981873002",
-    icon: MapPin,
-  },
-  {
-    title: "LH Lovers",
-    subtitle: "Grupo VIP no WhatsApp · Ofertas em primeira mão",
-    href: "#",
-    icon: Crown,
-    highlight: true,
-    badge: "VIP",
-  },
-];
-
 const marqueeItems = [
   "Frete para todo o Brasil",
   "Parcelamos em até 10x",
@@ -46,70 +23,22 @@ const marqueeItems = [
   "Novidades toda semana",
 ];
 
-// ============================================================
-// OFERTAS DO DIA — edite/adicione/remova itens aqui
-// ============================================================
-const dailyOffers: {
-  title: string;
-  category: string;
-  price: string;
-  oldPrice?: string;
-  discount?: string;
-  image?: string;
-  href: string;
-}[] = [
-  {
-    title: "iPhone 13 128GB",
-    category: "Apple",
-    price: "R$ 3.299",
-    oldPrice: "R$ 3.899",
-    discount: "-15%",
-    href: "https://wa.me/5581998215108?text=Quero+ver+o+iPhone+13+em+oferta",
-  },
-  {
-    title: "Redmi Note 13 Pro",
-    category: "Xiaomi",
-    price: "R$ 1.799",
-    oldPrice: "R$ 2.199",
-    discount: "-18%",
-    href: "https://wa.me/5581998215108?text=Quero+ver+o+Redmi+Note+13+Pro",
-  },
-  {
-    title: "AirPods Pro 2",
-    category: "Apple",
-    price: "R$ 1.499",
-    oldPrice: "R$ 1.899",
-    discount: "-21%",
-    href: "https://wa.me/5581998215108?text=Quero+ver+o+AirPods+Pro+2",
-  },
-];
-
-const stores = [
-  {
-    label: "Loja Matriz",
-    city: "Palmares",
-    state: "PE",
-    address: "Centro · Palmares — PE",
-    hours: "Seg a Sex · 9h — 18h · Sáb · 8h — 14h",
-    maps: "https://maps.app.goo.gl/2DdA2bi5md4XdWUG6",
-    whatsapp: "https://wa.me/5581998215108",
-    phone: "(81) 99821-5108",
-    tag: "LH · PE · palmares",
-  },
-  {
-    label: "Loja Filial",
-    city: "Barreiros",
-    state: "PE",
-    address: "Centro · Barreiros — PE",
-    hours: "Seg a Sex · 9h — 18h · Sáb · 8h — 14h",
-    maps: "https://maps.app.goo.gl/WR6BsBKarMYAD7R77",
-    whatsapp: "https://wa.me/5581981873002",
-    phone: "(81) 98187-3002",
-    tag: "LH · PE · barreiros",
-  },
-];
+function getIcon(name: string) {
+  const I = (Icons as any)[name];
+  return (I ?? MapPin) as typeof MapPin;
+}
 
 function Index() {
+  const { data: hero } = useHero();
+  const { data: offers = [] } = useOffers();
+  const { data: quickLinks = [] } = useQuickLinks();
+  const { data: stores = [] } = useStores();
+
+  const brand = hero?.brand ?? "LH Import";
+  const handle = hero?.handle ?? "@lhimport";
+  const tagline = hero?.tagline ?? "";
+  const categories = hero?.categories ?? [];
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       {/* Top bar */}
@@ -126,7 +55,7 @@ function Index() {
         <div className="relative">
           <div className="animate-pulse-ring relative grid size-32 place-items-center rounded-full border border-neon/40 bg-card">
             <div className="grid size-24 place-items-center rounded-full bg-gradient-to-br from-zinc-800 to-black">
-              <span className="font-mono text-[11px] font-bold tracking-tight text-neon">LH IMPORT</span>
+              <span className="font-mono text-[11px] font-bold tracking-tight text-neon">{brand.toUpperCase()}</span>
             </div>
           </div>
           <div className="absolute right-0 top-1 grid size-6 place-items-center rounded-full border border-neon/40 bg-card">
@@ -134,30 +63,29 @@ function Index() {
           </div>
         </div>
 
-        <h1 className="mt-6 text-3xl font-semibold tracking-tight sm:text-4xl">LH Import</h1>
-        <p className="mt-1 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">@lhimport</p>
-        <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-          Duas lojas físicas e atendimento em tempo real pelo WhatsApp
-        </p>
+        <h1 className="mt-6 text-3xl font-semibold tracking-tight sm:text-4xl">{brand}</h1>
+        <p className="mt-1 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">{handle}</p>
+        <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">{tagline}</p>
 
         <a
-          href="#"
+          href={hero?.instagram ?? "#"}
           className="mt-5 grid size-10 place-items-center rounded-full border border-border bg-card transition-colors hover:border-neon/60 hover:text-neon"
           aria-label="Instagram"
         >
           <Instagram className="size-4" />
         </a>
 
-        {/* Categories chip */}
-        <div className="mt-7 inline-flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em]">
-          <span className="size-1.5 rounded-full bg-neon shadow-[0_0_6px_var(--neon)]" />
-          {categories.map((c, i) => (
-            <span key={c} className="flex items-center gap-1">
-              <span className={i === 0 ? "text-foreground" : "text-muted-foreground"}>{c}</span>
-              {i < categories.length - 1 && <span className="text-border">·</span>}
-            </span>
-          ))}
-        </div>
+        {categories.length > 0 && (
+          <div className="mt-7 inline-flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em]">
+            <span className="size-1.5 rounded-full bg-neon shadow-[0_0_6px_var(--neon)]" />
+            {categories.map((c, i) => (
+              <span key={c} className="flex items-center gap-1">
+                <span className={i === 0 ? "text-foreground" : "text-muted-foreground"}>{c}</span>
+                {i < categories.length - 1 && <span className="text-border">·</span>}
+              </span>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Ofertas do dia */}
@@ -168,19 +96,16 @@ function Index() {
               <Flame className="size-3" />
               Ofertas do dia
             </span>
-            <h2 className="hidden text-sm font-medium tracking-tight sm:block">
-              · atualizadas todo dia
-            </h2>
           </div>
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            {String(dailyOffers.length).padStart(2, "0")} itens
+            {String(offers.length).padStart(2, "0")} itens
           </span>
         </div>
 
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {dailyOffers.map((o) => (
+          {offers.map((o) => (
             <a
-              key={o.title}
+              key={o.id}
               href={o.href}
               className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-neon/40 hover:shadow-[0_0_30px_-12px_var(--neon)]"
             >
@@ -195,17 +120,19 @@ function Index() {
                     {o.discount}
                   </span>
                 )}
-                <span className="absolute right-3 top-3 rounded-full border border-border bg-background/80 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-muted-foreground backdrop-blur">
-                  {o.category}
-                </span>
+                {o.category && (
+                  <span className="absolute right-3 top-3 rounded-full border border-border bg-background/80 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-muted-foreground backdrop-blur">
+                    {o.category}
+                  </span>
+                )}
               </div>
               <div className="flex flex-1 flex-col gap-3 p-4">
                 <h3 className="text-sm font-medium tracking-tight">{o.title}</h3>
                 <div className="mt-auto flex items-end justify-between">
                   <div>
-                    {o.oldPrice && (
+                    {o.old_price && (
                       <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground line-through">
-                        {o.oldPrice}
+                        {o.old_price}
                       </div>
                     )}
                     <div className="text-lg font-semibold text-neon">{o.price}</div>
@@ -219,67 +146,68 @@ function Index() {
             </a>
           ))}
 
-          {/* Slot vazio para adicionar nova oferta */}
-          <div className="grid min-h-[260px] place-items-center rounded-2xl border border-dashed border-border bg-card/40 p-6 text-center">
-            <div className="flex flex-col items-center gap-2">
-              <div className="grid size-10 place-items-center rounded-full border border-border bg-card text-muted-foreground">
-                <Plus className="size-4" />
+          {offers.length === 0 && (
+            <div className="grid min-h-[260px] place-items-center rounded-2xl border border-dashed border-border bg-card/40 p-6 text-center sm:col-span-2 lg:col-span-3">
+              <div className="flex flex-col items-center gap-2">
+                <div className="grid size-10 place-items-center rounded-full border border-border bg-card text-muted-foreground">
+                  <Plus className="size-4" />
+                </div>
+                <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Nenhuma oferta cadastrada
+                </p>
               </div>
-              <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                Espaço disponível
-              </p>
-              <p className="max-w-[180px] text-xs text-muted-foreground/70">
-                Adicione uma nova oferta em <span className="text-neon">dailyOffers</span>
-              </p>
             </div>
-          </div>
+          )}
         </div>
       </section>
 
-      {/* Section 01 — quick access */}
+      {/* Quick access */}
       <section className="mx-auto w-full max-w-2xl px-5 pb-10">
-        <SectionHeader index="01" title="Acesso rápido" right="3 links" />
+        <SectionHeader index="01" title="Acesso rápido" right={`${quickLinks.length} links`} />
         <div className="mt-4 space-y-3">
-          {quickLinks.map((link) => (
-            <a
-              key={link.title}
-              href={link.href}
-              className={[
-                "group flex items-center gap-4 rounded-2xl border p-4 transition-all",
-                link.highlight
-                  ? "border-neon/60 bg-neon text-neon-foreground shadow-[0_0_30px_-8px_var(--neon)] hover:brightness-105"
-                  : "border-border bg-card hover:border-neon/40",
-              ].join(" ")}
-            >
-              <div
+          {quickLinks.map((link) => {
+            const Icon = getIcon(link.icon);
+            return (
+              <a
+                key={link.id}
+                href={link.href}
                 className={[
-                  "grid size-11 shrink-0 place-items-center rounded-full",
-                  link.highlight ? "bg-neon-foreground/10 text-neon-foreground" : "bg-secondary text-neon",
+                  "group flex items-center gap-4 rounded-2xl border p-4 transition-all",
+                  link.highlight
+                    ? "border-neon/60 bg-neon text-neon-foreground shadow-[0_0_30px_-8px_var(--neon)] hover:brightness-105"
+                    : "border-border bg-card hover:border-neon/40",
                 ].join(" ")}
               >
-                <link.icon className="size-4" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="truncate font-medium">{link.title}</span>
-                  {link.badge && (
-                    <span className="rounded-full bg-neon-foreground/15 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest">
-                      {link.badge}
-                    </span>
-                  )}
-                </div>
-                <p
+                <div
                   className={[
-                    "mt-0.5 truncate text-xs",
-                    link.highlight ? "text-neon-foreground/80" : "text-muted-foreground",
+                    "grid size-11 shrink-0 place-items-center rounded-full",
+                    link.highlight ? "bg-neon-foreground/10 text-neon-foreground" : "bg-secondary text-neon",
                   ].join(" ")}
                 >
-                  {link.subtitle}
-                </p>
-              </div>
-              <ArrowUpRight className="size-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </a>
-          ))}
+                  <Icon className="size-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="truncate font-medium">{link.title}</span>
+                    {link.badge && (
+                      <span className="rounded-full bg-neon-foreground/15 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest">
+                        {link.badge}
+                      </span>
+                    )}
+                  </div>
+                  <p
+                    className={[
+                      "mt-0.5 truncate text-xs",
+                      link.highlight ? "text-neon-foreground/80" : "text-muted-foreground",
+                    ].join(" ")}
+                  >
+                    {link.subtitle}
+                  </p>
+                </div>
+                <ArrowUpRight className="size-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+            );
+          })}
         </div>
       </section>
 
@@ -295,14 +223,14 @@ function Index() {
         </div>
       </div>
 
-      {/* Section 02 — physical stores */}
+      {/* Stores */}
       <section className="mx-auto w-full max-w-5xl px-5 py-12">
-        <SectionHeader index="02" title="Lojas físicas" right="02 unidades" />
+        <SectionHeader index="02" title="Lojas físicas" right={`${String(stores.length).padStart(2, "0")} unidades`} />
 
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {stores.map((s, i) => (
             <article
-              key={s.city}
+              key={s.id}
               className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-colors hover:border-neon/30"
             >
               <div className="flex items-start justify-between">
@@ -311,7 +239,7 @@ function Index() {
                   {s.label}
                 </span>
                 <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                  0{i + 1} / 02
+                  0{i + 1} / {String(stores.length).padStart(2, "0")}
                 </span>
               </div>
 
@@ -341,11 +269,10 @@ function Index() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="border-t border-border px-5 py-8">
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 sm:flex-row">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            © 2026 · LH Import · Todos os direitos reservados
+            © 2026 · {brand} · Todos os direitos reservados
           </p>
           <p className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
             <Sparkles className="size-3 text-neon" />
