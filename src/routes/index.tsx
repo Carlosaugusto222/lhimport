@@ -160,6 +160,82 @@ function Index() {
         </div>
       </section>
 
+      {/* Ofertas do dia */}
+      <section className="mx-auto w-full max-w-5xl px-5 pb-10">
+        <div className="flex items-end justify-between border-b border-border pb-3">
+          <div className="flex items-baseline gap-3">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-neon/40 bg-neon/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-neon">
+              <Flame className="size-3" />
+              Ofertas do dia
+            </span>
+            <h2 className="hidden text-sm font-medium tracking-tight sm:block">
+              · atualizadas todo dia
+            </h2>
+          </div>
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+            {String(dailyOffers.length).padStart(2, "0")} itens
+          </span>
+        </div>
+
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {dailyOffers.map((o) => (
+            <a
+              key={o.title}
+              href={o.href}
+              className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-neon/40 hover:shadow-[0_0_30px_-12px_var(--neon)]"
+            >
+              <div className="relative grid aspect-[4/3] place-items-center bg-gradient-to-br from-zinc-900 to-black">
+                {o.image ? (
+                  <img src={o.image} alt={o.title} className="size-full object-cover" />
+                ) : (
+                  <Tag className="size-10 text-muted-foreground/40" />
+                )}
+                {o.discount && (
+                  <span className="absolute left-3 top-3 rounded-full bg-neon px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-neon-foreground">
+                    {o.discount}
+                  </span>
+                )}
+                <span className="absolute right-3 top-3 rounded-full border border-border bg-background/80 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-muted-foreground backdrop-blur">
+                  {o.category}
+                </span>
+              </div>
+              <div className="flex flex-1 flex-col gap-3 p-4">
+                <h3 className="text-sm font-medium tracking-tight">{o.title}</h3>
+                <div className="mt-auto flex items-end justify-between">
+                  <div>
+                    {o.oldPrice && (
+                      <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground line-through">
+                        {o.oldPrice}
+                      </div>
+                    )}
+                    <div className="text-lg font-semibold text-neon">{o.price}</div>
+                  </div>
+                  <span className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors group-hover:border-neon/60 group-hover:text-neon">
+                    Comprar
+                    <ArrowUpRight className="size-3" />
+                  </span>
+                </div>
+              </div>
+            </a>
+          ))}
+
+          {/* Slot vazio para adicionar nova oferta */}
+          <div className="grid min-h-[260px] place-items-center rounded-2xl border border-dashed border-border bg-card/40 p-6 text-center">
+            <div className="flex flex-col items-center gap-2">
+              <div className="grid size-10 place-items-center rounded-full border border-border bg-card text-muted-foreground">
+                <Plus className="size-4" />
+              </div>
+              <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                Espaço disponível
+              </p>
+              <p className="max-w-[180px] text-xs text-muted-foreground/70">
+                Adicione uma nova oferta em <span className="text-neon">dailyOffers</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Section 01 — quick access */}
       <section className="mx-auto w-full max-w-2xl px-5 pb-10">
         <SectionHeader index="01" title="Acesso rápido" right="3 links" />
