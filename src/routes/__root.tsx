@@ -92,10 +92,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/250fa0c1-dfce-4ba8-ac82-4c16452588d4/id-preview-5b1d782f--964d79d2-f276-49a6-97a7-ae2d04dc1f4f.lovable.app-1782833132117.png" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://vvnonlmtqjppumhlchkg.supabase.co", crossOrigin: "anonymous" },
+      { rel: "dns-prefetch", href: "https://vvnonlmtqjppumhlchkg.supabase.co" },
     ],
   }),
   shellComponent: RootShell,
@@ -106,7 +105,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>
