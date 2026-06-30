@@ -8,17 +8,60 @@ import {
 import { useHero, useOffers, useQuickLinks, useStores } from "@/hooks/useSiteData";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
+const SITE_URL = "https://lhimport.lovable.app";
+const OG_IMAGE = `${SITE_URL}/og-cover.jpg`;
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "LH Import — Link Oficial" },
-      { name: "description", content: "Duas lojas físicas em PE e atendimento em tempo real pelo WhatsApp. Apple, Xiaomi, Realme, perfumes e eletrônicos." },
-      { property: "og:title", content: "LH Import — Link Oficial" },
-      { property: "og:description", content: "Duas lojas físicas em PE e atendimento em tempo real pelo WhatsApp." },
+      { title: "LH Import — Apple, Xiaomi, Realme e Perfumes em Pernambuco" },
+      { name: "description", content: "Loja física em Palmares e Barreiros (PE). iPhone, Xiaomi, Realme, perfumes importados e eletrônicos originais com garantia. Atendimento por WhatsApp e parcelamento em até 10x." },
+      { name: "keywords", content: "LH Import, iPhone Palmares, Xiaomi Pernambuco, Realme PE, perfumes importados, eletrônicos Barreiros, loja celular Palmares" },
+      { name: "author", content: "LH Import" },
+      { property: "og:title", content: "LH Import — Apple, Xiaomi, Realme e Perfumes" },
+      { property: "og:description", content: "Duas lojas físicas em PE. Produtos originais, parcelamento e atendimento em tempo real pelo WhatsApp." },
+      { property: "og:url", content: SITE_URL },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:title", content: "LH Import — Link Oficial" },
+      { name: "twitter:description", content: "Apple, Xiaomi, Realme, perfumes e eletrônicos. Lojas em Palmares e Barreiros (PE)." },
+      { name: "twitter:image", content: OG_IMAGE },
+    ],
+    links: [{ rel: "canonical", href: SITE_URL }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          name: "LH Import",
+          url: SITE_URL,
+          image: OG_IMAGE,
+          priceRange: "$$",
+          description: "Loja de eletrônicos, celulares Apple, Xiaomi, Realme e perfumes importados em Pernambuco.",
+          areaServed: { "@type": "State", name: "Pernambuco" },
+          location: [
+            {
+              "@type": "Place",
+              name: "LH Import — Matriz Palmares",
+              address: { "@type": "PostalAddress", addressLocality: "Palmares", addressRegion: "PE", addressCountry: "BR" },
+            },
+            {
+              "@type": "Place",
+              name: "LH Import — Filial Barreiros",
+              address: { "@type": "PostalAddress", addressLocality: "Barreiros", addressRegion: "PE", addressCountry: "BR" },
+            },
+          ],
+          sameAs: ["https://instagram.com/lhimport"],
+        }),
+      },
     ],
   }),
   component: Index,
 });
+
 
 const marqueeItems = [
   "Frete para todo o Brasil",
