@@ -144,24 +144,25 @@ function Index() {
                   </span>
                 )}
               </div>
-              <div className="flex flex-1 flex-col gap-3 p-4">
-                <h3 className="text-sm font-medium tracking-tight">{o.title}</h3>
+              <div className="flex flex-1 flex-col gap-2 p-3 sm:gap-3 sm:p-4">
+                <h3 className="line-clamp-2 text-xs font-medium tracking-tight sm:text-sm">{o.title}</h3>
                 <div>
                   {o.old_price && (
                     <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground line-through">
                       {o.old_price}
                     </div>
                   )}
-                  <div className="text-lg font-semibold text-neon">{o.price}</div>
+                  <div className="text-base font-semibold text-neon sm:text-lg">{o.price}</div>
                 </div>
                 <button
                   onClick={() => openBuy(o)}
-                  className="mt-auto inline-flex items-center justify-center gap-1.5 rounded-full bg-neon px-3 py-2 font-mono text-[11px] font-bold uppercase tracking-widest text-neon-foreground transition-all hover:brightness-110"
+                  className="mt-auto inline-flex items-center justify-center gap-1.5 rounded-full bg-neon px-3 py-2 font-mono text-[10px] font-bold uppercase tracking-widest text-neon-foreground transition-all hover:brightness-110 sm:text-[11px]"
                 >
                   <ShoppingBag className="size-3.5" />
                   Comprar
                 </button>
               </div>
+
             </div>
           ))}
 
