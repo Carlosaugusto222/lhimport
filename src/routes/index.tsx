@@ -169,7 +169,9 @@ function Index() {
         <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground sm:mt-4">{tagline}</p>
 
         <a
-          href={hero?.instagram ?? "#"}
+          href={safeUrl(hero?.instagram)}
+          target="_blank"
+          rel="noopener noreferrer"
           className="mt-5 grid size-10 place-items-center rounded-full border border-border bg-card transition-colors hover:border-neon/60 hover:text-neon"
           aria-label="Instagram"
         >
