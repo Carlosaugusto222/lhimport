@@ -339,12 +339,12 @@ function Index() {
 
 function SectionHeader({ index, title, right }: { index: string; title: string; right: string }) {
   return (
-    <div className="flex items-end justify-between border-b border-border pb-3">
-      <div className="flex items-baseline gap-3">
+    <div className="flex flex-wrap items-end justify-between gap-2 border-b border-border pb-3">
+      <div className="flex min-w-0 items-baseline gap-3">
         <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
           [ {index} ]
         </span>
-        <h2 className="text-sm font-medium tracking-tight">· {title}</h2>
+        <h2 className="truncate text-sm font-medium tracking-tight">· {title}</h2>
       </div>
       <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
         {right}
@@ -352,6 +352,7 @@ function SectionHeader({ index, title, right }: { index: string; title: string; 
     </div>
   );
 }
+
 
 function StoreAction({
   icon: Icon,
