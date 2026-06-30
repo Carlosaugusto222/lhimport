@@ -129,7 +129,13 @@ function Index() {
             >
               <div className="relative grid aspect-[4/3] place-items-center overflow-hidden bg-gradient-to-br from-zinc-900 to-black">
                 {o.image ? (
-                  <img src={o.image} alt={o.title} className="size-full object-cover" />
+                  <img
+                    src={o.image}
+                    alt={o.title}
+                    loading="lazy"
+                    decoding="async"
+                    className="size-full object-cover"
+                  />
                 ) : (
                   <Tag className="size-10 text-muted-foreground/40" />
                 )}
