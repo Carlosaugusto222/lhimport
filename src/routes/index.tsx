@@ -1,12 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowUpRight, Instagram, MapPin, Navigation, MessageCircle, Info,
   Sparkles, BadgeCheck, Flame, Plus, Tag, ShoppingBag, Crown, Phone,
   Store, Globe, Star, Heart, ShoppingCart, Truck, Package, Gift,
 } from "lucide-react";
+import { toast } from "sonner";
 import { useHero, useOffers, useQuickLinks, useStores } from "@/hooks/useSiteData";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+
+/** Allowlist external URLs to prevent javascript:/data: XSS via admin-controlled fields. */
+const SAFE_PROTOCOLS = new Set(["http:", "https:", "mailto:", "tel:"]);
+function safeUrl(raw: string | null | undefined): string {
+  if (!raw) return "#";
+  const v = raw.trim();
+  if (!v || v === "#") return "#";
+  try {
+    const u = new URL(v, typeof window !== "undefined" ? window.location.origin : "https://lhimport.lovable.app");
+    return SAFE_PROTOCOLS.has(u.protocol) ? u.toString() : "#";
+  } catch {
+    return "#";
+  }
+}
 
 const SITE_URL = "https://lhimport.lovable.app";
 const OG_IMAGE = `${SITE_URL}/og-cover.jpg`;
