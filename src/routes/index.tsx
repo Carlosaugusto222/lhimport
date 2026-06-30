@@ -107,9 +107,9 @@ function Index() {
 
 
       {/* Ofertas do dia */}
-      <section className="mx-auto w-full max-w-5xl px-5 pb-10">
-        <div className="flex items-end justify-between border-b border-border pb-3">
-          <div className="flex items-baseline gap-3">
+      <section className="mx-auto w-full max-w-5xl px-4 pb-10 sm:px-5">
+        <div className="flex flex-wrap items-end justify-between gap-2 border-b border-border pb-3">
+          <div className="flex min-w-0 items-baseline gap-3">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-neon/40 bg-neon/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-neon">
               <Flame className="size-3" />
               Ofertas do dia
@@ -120,7 +120,8 @@ function Index() {
           </span>
         </div>
 
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+
           {offers.map((o) => (
             <div
               key={o.id}
