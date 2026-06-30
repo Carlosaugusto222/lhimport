@@ -283,7 +283,9 @@ function Index() {
             return (
               <a
                 key={link.id}
-                href={link.href}
+                href={safeUrl(link.href)}
+                target="_blank"
+                rel="noopener noreferrer"
                 className={[
                   "group flex items-center gap-3 rounded-2xl border p-3 transition-all sm:gap-4 sm:p-4",
                   link.highlight
