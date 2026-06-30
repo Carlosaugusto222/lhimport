@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import * as Icons from "lucide-react";
-import { ArrowUpRight, Instagram, MapPin, Navigation, MessageCircle, Info, Sparkles, BadgeCheck, Flame, Plus, Tag } from "lucide-react";
+import { ArrowUpRight, Instagram, MapPin, Navigation, MessageCircle, Info, Sparkles, BadgeCheck, Flame, Plus, Tag, ShoppingBag } from "lucide-react";
 import { useHero, useOffers, useQuickLinks, useStores } from "@/hooks/useSiteData";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
