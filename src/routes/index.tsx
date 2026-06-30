@@ -1,12 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowUpRight, Instagram, MapPin, Navigation, MessageCircle, Info,
   Sparkles, BadgeCheck, Flame, Plus, Tag, ShoppingBag, Crown, Phone,
   Store, Globe, Star, Heart, ShoppingCart, Truck, Package, Gift,
 } from "lucide-react";
+import { toast } from "sonner";
 import { useHero, useOffers, useQuickLinks, useStores } from "@/hooks/useSiteData";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+
+/** Allowlist external URLs to prevent javascript:/data: XSS via admin-controlled fields. */
+const SAFE_PROTOCOLS = new Set(["http:", "https:", "mailto:", "tel:"]);
+function safeUrl(raw: string | null | undefined): string {
+  if (!raw) return "#";
+  const v = raw.trim();
+  if (!v || v === "#") return "#";
+  try {
+    const u = new URL(v, typeof window !== "undefined" ? window.location.origin : "https://lhimport.lovable.app");
+    return SAFE_PROTOCOLS.has(u.protocol) ? u.toString() : "#";
+  } catch {
+    return "#";
+  }
+}
 
 const SITE_URL = "https://lhimport.lovable.app";
 const OG_IMAGE = `${SITE_URL}/og-cover.jpg`;
@@ -83,22 +98,39 @@ function getIcon(name: string) {
 
 
 function Index() {
-  const { data: hero } = useHero();
-  const { data: offers = [] } = useOffers();
-  const { data: quickLinks = [] } = useQuickLinks();
-  const { data: stores = [] } = useStores();
+  const { data: hero, error: heroErr } = useHero();
+  const { data: offers = [], error: offersErr } = useOffers();
+  const { data: quickLinks = [], error: linksErr } = useQuickLinks();
+  const { data: stores = [], error: storesErr } = useStores();
   const [buyOpen, setBuyOpen] = useState(false);
   const [buyOffer, setBuyOffer] = useState<any>(null);
+
+  useEffect(() => {
+    const err = heroErr || offersErr || linksErr || storesErr;
+    if (err) {
+      console.error("[lh-import] load error", err);
+      toast.error("Não foi possível carregar parte do conteúdo. Tente novamente.");
+    }
+  }, [heroErr, offersErr, linksErr, storesErr]);
 
   function openBuy(offer: any) { setBuyOffer(offer); setBuyOpen(true); }
   function chooseStore(store: any) {
     setBuyOpen(false);
-    const base = (store.whatsapp || "").trim();
-    if (!base || base === "#") return;
-    const msg = encodeURIComponent(`Olá! Tenho interesse em: ${buyOffer?.title}${buyOffer?.price ? ` (${buyOffer.price})` : ""}`);
-    const sep = base.includes("?") ? "&" : "?";
-    const url = /text=/.test(base) ? base : `${base}${sep}text=${msg}`;
-    window.open(url, "_blank", "noopener");
+    try {
+      const safe = safeUrl(store?.whatsapp);
+      if (safe === "#") { toast.error("WhatsApp da loja indisponível."); return; }
+      const u = new URL(safe);
+      if (!/^https?:$/.test(u.protocol)) return;
+      const title = String(buyOffer?.title ?? "").slice(0, 200);
+      const price = buyOffer?.price ? ` (${String(buyOffer.price).slice(0, 60)})` : "";
+      if (!u.searchParams.has("text")) {
+        u.searchParams.set("text", `Olá! Tenho interesse em: ${title}${price}`);
+      }
+      window.open(u.toString(), "_blank", "noopener,noreferrer");
+    } catch (e) {
+      console.error("[lh-import] chooseStore failed", e);
+      toast.error("Não foi possível abrir o WhatsApp.");
+    }
   }
 
 
@@ -137,7 +169,9 @@ function Index() {
         <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground sm:mt-4">{tagline}</p>
 
         <a
-          href={hero?.instagram ?? "#"}
+          href={safeUrl(hero?.instagram)}
+          target="_blank"
+          rel="noopener noreferrer"
           className="mt-5 grid size-10 place-items-center rounded-full border border-border bg-card transition-colors hover:border-neon/60 hover:text-neon"
           aria-label="Instagram"
         >
@@ -249,7 +283,9 @@ function Index() {
             return (
               <a
                 key={link.id}
-                href={link.href}
+                href={safeUrl(link.href)}
+                target="_blank"
+                rel="noopener noreferrer"
                 className={[
                   "group flex items-center gap-3 rounded-2xl border p-3 transition-all sm:gap-4 sm:p-4",
                   link.highlight
@@ -425,7 +461,9 @@ function StoreAction({
 }) {
   return (
     <a
-      href={href}
+      href={safeUrl(href)}
+      target="_blank"
+      rel="noopener noreferrer"
       className="group flex items-center gap-2.5 rounded-xl border border-border bg-background/60 p-2.5 transition-colors hover:border-neon/40 hover:bg-secondary"
     >
       <div className="grid size-8 shrink-0 place-items-center rounded-lg bg-secondary text-neon">
