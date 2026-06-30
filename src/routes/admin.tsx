@@ -15,6 +15,12 @@ import { toast } from "sonner";
 import { LogOut, Plus, Save, Trash2, ExternalLink, Upload, ImageIcon } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
+  head: () => ({
+    meta: [
+      { title: "Admin — LH Import" },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: AdminPage,
 });
 
