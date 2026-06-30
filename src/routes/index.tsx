@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import * as Icons from "lucide-react";
-import { ArrowUpRight, Instagram, MapPin, Navigation, MessageCircle, Info, Sparkles, BadgeCheck, Flame, Plus, Tag, ShoppingBag } from "lucide-react";
+import {
+  ArrowUpRight, Instagram, MapPin, Navigation, MessageCircle, Info,
+  Sparkles, BadgeCheck, Flame, Plus, Tag, ShoppingBag, Crown, Phone,
+  Store, Globe, Star, Heart, ShoppingCart, Truck, Package, Gift,
+} from "lucide-react";
 import { useHero, useOffers, useQuickLinks, useStores } from "@/hooks/useSiteData";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
@@ -25,10 +28,16 @@ const marqueeItems = [
   "Novidades toda semana",
 ];
 
+const ICONS: Record<string, typeof MapPin> = {
+  MapPin, Instagram, MessageCircle, Navigation, Info, Crown, Phone,
+  Store, Globe, Star, Heart, ShoppingCart, ShoppingBag, Truck, Package,
+  Gift, BadgeCheck, Sparkles, Flame, Tag,
+};
+
 function getIcon(name: string) {
-  const I = (Icons as any)[name];
-  return (I ?? MapPin) as typeof MapPin;
+  return ICONS[name] ?? MapPin;
 }
+
 
 function Index() {
   const { data: hero } = useHero();
