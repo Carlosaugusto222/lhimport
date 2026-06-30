@@ -58,13 +58,14 @@ function Index() {
   return (
     <main className="min-h-screen bg-background text-foreground">
       {/* Top bar */}
-      <div className="flex items-center justify-between px-5 py-5 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:px-8">
+      <div className="flex items-center justify-between px-4 py-4 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:px-8 sm:py-5">
         <div className="flex items-center gap-2">
           <span className="size-1.5 rounded-full bg-neon shadow-[0_0_8px_var(--neon)]" />
           link.oficial
         </div>
         <div>v · 2026</div>
       </div>
+
 
       {/* Hero */}
       <section className="flex flex-col items-center px-5 pb-10 pt-6 text-center">
