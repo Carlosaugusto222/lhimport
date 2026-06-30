@@ -83,6 +83,7 @@
 
 .animate-marquee {
   animation: marquee 30s linear infinite;
+  will-change: transform;
 }
 
 @keyframes pulse-ring {
@@ -92,6 +93,18 @@
 
 .animate-pulse-ring {
   animation: pulse-ring 2.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-pulse-ring {
+    animation: none !important;
+  }
+}
+
+@utility cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 600px;
 }
 
 a[href*="lovable.dev"],
@@ -105,4 +118,5 @@ div[style*="Edit with Lovable"],
   position: absolute !important;
   z-index: -9999 !important;
 }
+
 
