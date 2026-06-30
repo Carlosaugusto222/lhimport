@@ -246,16 +246,16 @@ function Index() {
       </div>
 
       {/* Stores */}
-      <section className="mx-auto w-full max-w-5xl px-5 py-12">
+      <section className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-5 sm:py-12">
         <SectionHeader index="02" title="Lojas físicas" right={`${String(stores.length).padStart(2, "0")} unidades`} />
 
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {stores.map((s, i) => (
             <article
               key={s.id}
-              className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-colors hover:border-neon/30"
+              className="relative overflow-hidden rounded-2xl border border-border bg-card p-4 transition-colors hover:border-neon/30 sm:p-5"
             >
-              <div className="flex items-start justify-between">
+              <div className="flex flex-wrap items-start justify-between gap-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-neon/40 bg-neon/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-neon">
                   <MapPin className="size-3" />
                   {s.label}
@@ -265,19 +265,19 @@ function Index() {
                 </span>
               </div>
 
-              <h3 className="mt-6 text-2xl font-semibold tracking-tight">
+              <h3 className="mt-5 text-xl font-semibold tracking-tight sm:mt-6 sm:text-2xl">
                 {s.city} <span className="text-muted-foreground">— {s.state}</span>
               </h3>
               <p className="mt-1 text-sm text-muted-foreground">{s.address}</p>
               <p className="mt-1 font-mono text-xs text-muted-foreground">{s.hours}</p>
 
-              <div className="mt-5 grid gap-2 sm:grid-cols-3">
+              <div className="mt-4 grid gap-2 sm:mt-5 sm:grid-cols-3">
                 <StoreAction icon={Navigation} label="Como chegar" sub="Google Maps" href={s.maps} />
                 <StoreAction icon={MessageCircle} label="WhatsApp" sub={s.phone} href={s.whatsapp} />
                 <StoreAction icon={Info} label="Informações" sub="Ver loja" href="#" />
               </div>
 
-              <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-border pt-4 sm:mt-5">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                   {s.tag}
                 </span>
@@ -291,8 +291,8 @@ function Index() {
         </div>
       </section>
 
-      <footer className="border-t border-border px-5 py-8">
-        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 sm:flex-row">
+      <footer className="border-t border-border px-4 py-8 sm:px-5">
+        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-left">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
             © 2026 · {brand} · Todos os direitos reservados
           </p>
@@ -302,6 +302,7 @@ function Index() {
           </p>
         </div>
       </footer>
+
 
       <Dialog open={buyOpen} onOpenChange={setBuyOpen}>
         <DialogContent className="border-border bg-card">
