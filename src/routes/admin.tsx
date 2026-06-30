@@ -12,7 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { LogOut, Plus, Save, Trash2, ExternalLink } from "lucide-react";
+import { LogOut, Plus, Save, Trash2, ExternalLink, Upload, ImageIcon } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
   component: AdminPage,
@@ -161,16 +161,52 @@ function OfferRow({ offer }: { offer: any }) {
 
   const set = (k: string, v: any) => setForm({ ...form, [k]: v });
 
+  const [uploading, setUploading] = useState(false);
+  async function onUpload(file: File) {
+    setUploading(true);
+    const ext = file.name.split(".").pop() || "jpg";
+    const path = `${offer.id}/${Date.now()}.${ext}`;
+    const { error: upErr } = await supabase.storage.from("product-images").upload(path, file, { upsert: true });
+    if (upErr) { setUploading(false); toast.error(upErr.message); return; }
+    const { data } = supabase.storage.from("product-images").getPublicUrl(path);
+    set("image", data.publicUrl);
+    setUploading(false);
+    toast.success("Imagem enviada — clique em Salvar");
+  }
+
   return (
     <Card className="p-4">
       <div className="grid gap-3 sm:grid-cols-2">
+        <Field label="Imagem do produto" className="sm:col-span-2">
+          <div className="flex items-center gap-3">
+            <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-lg border border-border bg-background">
+              {form.image ? (
+                <img src={form.image} alt="" className="size-full object-cover" />
+              ) : (
+                <ImageIcon className="size-5 text-muted-foreground" />
+              )}
+            </div>
+            <div className="flex-1 space-y-2">
+              <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-xs hover:border-neon/60 hover:text-neon">
+                <Upload className="size-3.5" />
+                {uploading ? "Enviando..." : "Enviar imagem"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  disabled={uploading}
+                  onChange={(e) => { const f = e.target.files?.[0]; if (f) onUpload(f); e.target.value = ""; }}
+                />
+              </label>
+              <Input placeholder="ou cole uma URL" value={form.image ?? ""} onChange={(e) => set("image", e.target.value)} />
+            </div>
+          </div>
+        </Field>
         <Field label="Título"><Input value={form.title ?? ""} onChange={(e) => set("title", e.target.value)} /></Field>
         <Field label="Categoria"><Input value={form.category ?? ""} onChange={(e) => set("category", e.target.value)} /></Field>
         <Field label="Preço"><Input value={form.price ?? ""} onChange={(e) => set("price", e.target.value)} /></Field>
         <Field label="Preço antigo"><Input value={form.old_price ?? ""} onChange={(e) => set("old_price", e.target.value)} /></Field>
         <Field label="Desconto (ex: -15%)"><Input value={form.discount ?? ""} onChange={(e) => set("discount", e.target.value)} /></Field>
-        <Field label="Imagem (URL)"><Input value={form.image ?? ""} onChange={(e) => set("image", e.target.value)} /></Field>
-        <Field label="Link (WhatsApp/URL)" className="sm:col-span-2"><Input value={form.href ?? ""} onChange={(e) => set("href", e.target.value)} /></Field>
         <Field label="Posição"><Input type="number" value={form.position ?? 0} onChange={(e) => set("position", Number(e.target.value))} /></Field>
         <div className="flex items-end gap-2">
           <Switch checked={form.is_active} onCheckedChange={(v) => set("is_active", v)} />
