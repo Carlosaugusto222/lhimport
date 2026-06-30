@@ -120,12 +120,11 @@ function Index() {
 
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {offers.map((o) => (
-            <a
+            <div
               key={o.id}
-              href={o.href}
               className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-neon/40 hover:shadow-[0_0_30px_-12px_var(--neon)]"
             >
-              <div className="relative grid aspect-[4/3] place-items-center bg-gradient-to-br from-zinc-900 to-black">
+              <div className="relative grid aspect-[4/3] place-items-center overflow-hidden bg-gradient-to-br from-zinc-900 to-black">
                 {o.image ? (
                   <img src={o.image} alt={o.title} className="size-full object-cover" />
                 ) : (
@@ -144,22 +143,23 @@ function Index() {
               </div>
               <div className="flex flex-1 flex-col gap-3 p-4">
                 <h3 className="text-sm font-medium tracking-tight">{o.title}</h3>
-                <div className="mt-auto flex items-end justify-between">
-                  <div>
-                    {o.old_price && (
-                      <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground line-through">
-                        {o.old_price}
-                      </div>
-                    )}
-                    <div className="text-lg font-semibold text-neon">{o.price}</div>
-                  </div>
-                  <span className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors group-hover:border-neon/60 group-hover:text-neon">
-                    Comprar
-                    <ArrowUpRight className="size-3" />
-                  </span>
+                <div>
+                  {o.old_price && (
+                    <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground line-through">
+                      {o.old_price}
+                    </div>
+                  )}
+                  <div className="text-lg font-semibold text-neon">{o.price}</div>
                 </div>
+                <button
+                  onClick={() => openBuy(o)}
+                  className="mt-auto inline-flex items-center justify-center gap-1.5 rounded-full bg-neon px-3 py-2 font-mono text-[11px] font-bold uppercase tracking-widest text-neon-foreground transition-all hover:brightness-110"
+                >
+                  <ShoppingBag className="size-3.5" />
+                  Comprar
+                </button>
               </div>
-            </a>
+            </div>
           ))}
 
           {offers.length === 0 && (
