@@ -296,6 +296,36 @@ function Index() {
           </p>
         </div>
       </footer>
+
+      <Dialog open={buyOpen} onOpenChange={setBuyOpen}>
+        <DialogContent className="border-border bg-card">
+          <DialogHeader>
+            <DialogTitle>Em qual loja você quer comprar?</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              {buyOffer?.title ? `${buyOffer.title} — ` : ""}escolha a unidade e abrimos o WhatsApp.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {stores.map((s) => (
+              <button
+                key={s.id}
+                onClick={() => chooseStore(s)}
+                className="group flex flex-col items-start gap-1 rounded-xl border border-border bg-background p-4 text-left transition-all hover:border-neon/60 hover:bg-secondary"
+              >
+                <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-neon">
+                  <MessageCircle className="size-3" /> {s.label || "Loja"}
+                </span>
+                <span className="text-base font-semibold tracking-tight">{s.city}</span>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{s.phone}</span>
+              </button>
+            ))}
+            {stores.length === 0 && (
+              <p className="text-sm text-muted-foreground">Nenhuma loja cadastrada.</p>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
     </main>
   );
 }
