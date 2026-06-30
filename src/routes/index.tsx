@@ -46,6 +46,44 @@ const marqueeItems = [
   "Novidades toda semana",
 ];
 
+// ============================================================
+// OFERTAS DO DIA — edite/adicione/remova itens aqui
+// ============================================================
+const dailyOffers: {
+  title: string;
+  category: string;
+  price: string;
+  oldPrice?: string;
+  discount?: string;
+  image?: string;
+  href: string;
+}[] = [
+  {
+    title: "iPhone 13 128GB",
+    category: "Apple",
+    price: "R$ 3.299",
+    oldPrice: "R$ 3.899",
+    discount: "-15%",
+    href: "https://wa.me/5581998215108?text=Quero+ver+o+iPhone+13+em+oferta",
+  },
+  {
+    title: "Redmi Note 13 Pro",
+    category: "Xiaomi",
+    price: "R$ 1.799",
+    oldPrice: "R$ 2.199",
+    discount: "-18%",
+    href: "https://wa.me/5581998215108?text=Quero+ver+o+Redmi+Note+13+Pro",
+  },
+  {
+    title: "AirPods Pro 2",
+    category: "Apple",
+    price: "R$ 1.499",
+    oldPrice: "R$ 1.899",
+    discount: "-21%",
+    href: "https://wa.me/5581998215108?text=Quero+ver+o+AirPods+Pro+2",
+  },
+];
+
 const stores = [
   {
     label: "Loja Matriz",
