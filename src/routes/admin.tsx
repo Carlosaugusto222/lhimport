@@ -67,14 +67,14 @@ function AdminDashboard({ email }: { email: string }) {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background/80 px-5 py-4 backdrop-blur">
-        <div>
-          <h1 className="text-sm font-semibold tracking-tight">Painel Admin · LH Import</h1>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{email}</p>
+      <header className="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-3 border-b border-border bg-background/80 px-4 py-3 backdrop-blur sm:px-5 sm:py-4">
+        <div className="min-w-0">
+          <h1 className="truncate text-sm font-semibold tracking-tight">Painel Admin · LH Import</h1>
+          <p className="truncate font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{email}</p>
         </div>
         <div className="flex items-center gap-2">
           <Link to="/" className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs hover:border-neon/60 hover:text-neon">
-            <ExternalLink className="size-3.5" /> Ver site
+            <ExternalLink className="size-3.5" /> <span className="hidden sm:inline">Ver site</span>
           </Link>
           <Button
             variant="outline"
@@ -84,19 +84,21 @@ function AdminDashboard({ email }: { email: string }) {
               navigate({ to: "/auth" });
             }}
           >
-            <LogOut className="size-3.5" /> Sair
+            <LogOut className="size-3.5" /> <span className="hidden sm:inline">Sair</span>
           </Button>
         </div>
       </header>
 
-      <div className="mx-auto max-w-5xl px-5 py-6">
+      <div className="mx-auto max-w-5xl px-4 py-5 sm:px-5 sm:py-6">
         <Tabs defaultValue="offers">
-          <TabsList>
-            <TabsTrigger value="offers">Ofertas</TabsTrigger>
-            <TabsTrigger value="links">Links rápidos</TabsTrigger>
-            <TabsTrigger value="stores">Lojas</TabsTrigger>
-            <TabsTrigger value="hero">Header</TabsTrigger>
-          </TabsList>
+          <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+            <TabsList className="w-max sm:w-auto">
+              <TabsTrigger value="offers">Ofertas</TabsTrigger>
+              <TabsTrigger value="links">Links rápidos</TabsTrigger>
+              <TabsTrigger value="stores">Lojas</TabsTrigger>
+              <TabsTrigger value="hero">Header</TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="offers" className="mt-6"><OffersTab /></TabsContent>
           <TabsContent value="links" className="mt-6"><QuickLinksTab /></TabsContent>
@@ -104,6 +106,7 @@ function AdminDashboard({ email }: { email: string }) {
           <TabsContent value="hero" className="mt-6"><HeroTab /></TabsContent>
         </Tabs>
       </div>
+
     </main>
   );
 }
