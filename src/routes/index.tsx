@@ -341,7 +341,7 @@ function Index() {
 
       {/* Stores */}
       <section className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-5 sm:py-12">
-        <SectionHeader index="02" title="Lojas físicas" right={`${String(stores.length).padStart(2, "0")} unidades`} />
+        <SectionHeader index="01 " title="Lojas físicas" right="01 UNIDADE" />
 
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {stores.map((s, i) => (
